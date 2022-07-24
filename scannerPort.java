@@ -5,18 +5,18 @@ import javax.swing.*;
 
 public class PortScanner extends JFrame implements ActionListener, ChangeListener {
 	
-	private static final long serialVersionUID = 2884600754343147821L; //Final variables
+	private static final long serialVersionUID = 2884600754343147821L;
 	private static final int W = 250;
 	private static final int H = 375;	
-	private boolean displayAll = false; //Flags
-	private JTextField ipAddress, lowerPort, higherPort; //Compoents
+	private boolean displayAll = false;
+	private JTextField ipAddress, lowerPort, higherPort;
 	private JTextArea output;
 	private JScrollPane outputScroller;
 	private JCheckBox toggleDisplayAll;
 	private JButton scanPorts;
 	private JPanel settingsPanel, outputPanel;
 	
-	public PortScanner() { // Sets up the frame and calls
+	public PortScanner() {
 		super( "Port Scanner" );
 		initComponents();
 		super.setLayout( new FlowLayout() );
@@ -26,20 +26,20 @@ public class PortScanner extends JFrame implements ActionListener, ChangeListene
 		super.setVisible( true );
 		super.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
-	private void initComponents() {  //  Sets up the components, panels, and adds them to the Frame
+	private void initComponents() { 
 		
-		this.ipAddress = new JTextField( 12 ); //Text fields
+		this.ipAddress = new JTextField( 12 );
 		this.lowerPort = new JTextField( 5 );
 		this.higherPort = new JTextField( 5 );
-		this.output = new JTextArea( 10, 20 ); //TextArea & ScrollPane
+		this.output = new JTextArea( 10, 20 );
 		this.output.setEditable( false );
 		this.output.setLineWrap( true );
 		this.outputScroller = new JScrollPane( this.output );
-		this.toggleDisplayAll = new JCheckBox( "Display all results (open & closed)" ); //Check box
+		this.toggleDisplayAll = new JCheckBox( "Display all results (open & closed)" );
 		this.toggleDisplayAll.addChangeListener( this );
-		this.scanPorts = new JButton( "Scan" ); //Buttons
+		this.scanPorts = new JButton( "Scan" );
 		this.scanPorts.addActionListener( this );
-		this.settingsPanel = new JPanel( new FlowLayout() ); //JPanels
+		this.settingsPanel = new JPanel( new FlowLayout() );
 		this.settingsPanel.setBorder( BorderFactory.createTitledBorder( "Scan information" ) );
 		this.settingsPanel.setPreferredSize( new Dimension( 230, 135 ) );
 		this.settingsPanel.add( new JLabel( "IP Address: " ) );
@@ -54,10 +54,10 @@ public class PortScanner extends JFrame implements ActionListener, ChangeListene
 		this.outputPanel.setBorder( BorderFactory.createTitledBorder( "Results: " ) );
 		this.outputPanel.add( outputScroller );	
 		super.add( this.settingsPanel );
-		super.add( this.outputPanel ); //add components
+		super.add( this.outputPanel );
 	}
         @Override
-	public void actionPerformed(ActionEvent ae ) { // manages button action
+	public void actionPerformed(ActionEvent ae ) {
 		if( ae.getSource() == this.scanPorts ) {
 			this.output.setText("Starting scan..." + System.lineSeparator() );
 			scan( this.ipAddress.getText(), this.lowerPort.getText(), this.higherPort.getText(), 200 );
@@ -69,9 +69,9 @@ public class PortScanner extends JFrame implements ActionListener, ChangeListene
 			this.displayAll = this.toggleDisplayAll.isSelected();
 		}}
 	private void scan( String ipAddress, String lowPort, String highPort, int timeout ) {
-		int start, end;  //Scans the specified ip address and tests the ports in the given range
+		int start, end; 
 
-		try {		//verify port numbers
+		try {
 			start = Integer.parseInt( lowPort );
 			end = Integer.parseInt( highPort );
 			
@@ -83,19 +83,19 @@ public class PortScanner extends JFrame implements ActionListener, ChangeListene
 			this.output.append( "Please enter valid port numbers." + System.lineSeparator() );
 			return;
 		}
-		for( int current = start; current <= end; current++ ) { //Scan ports in range
+		for( int current = start; current <= end; current++ ) {
 			try {
                             try (Socket s = new Socket()) {
-                                s.connect( new InetSocketAddress( ipAddress, current ), timeout ); //attempt a connection
-                            } //attempt a connection
+                                s.connect( new InetSocketAddress( ipAddress, current ), timeout ); 
+                            } 
 				
 				this.output.append( "Open port: " + current + System.lineSeparator() );
 			}
-			catch( IOException ioe ) { //connection failed
+			catch( IOException ioe ) { 
 				if( this.displayAll ) {
 					this.output.append( "Closed port: " + current + System.lineSeparator() );
 				}}}}
 	public static void main( String[] args ) {
 		@SuppressWarnings("unused")
-		PortScanner psg = new PortScanner(); // creates instance of GUI
+		PortScanner psg = new PortScanner();
 	}}
